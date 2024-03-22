@@ -198,7 +198,7 @@ def swelling_step(layers, J_0, mesh, subdomains, bdry, ids, params, U_eul = None
     class InitialGuess(UserExpression):
         def eval(self, values, x):
             values[0] = 0
-            values[1] = J_layer[-1] * x[1]
+            values[1] = 1e-2 * np.random.random()
         def value_shape(self):
             return (2, )
 
@@ -206,9 +206,6 @@ def swelling_step(layers, J_0, mesh, subdomains, bdry, ids, params, U_eul = None
     Xl[layers-1].interpolate(InitialGuess())
 
     X.apply("from subfunctions")
-
-    # print(Xl[0](5, 0.5))
-    print(np.linalg.norm(X.block_vector()[:]))
 
     #---------------------------------------------------------------------
     # Set up code to save solid quanntities only on the solid domain and
@@ -257,7 +254,7 @@ def swelling_step(layers, J_0, mesh, subdomains, bdry, ids, params, U_eul = None
     # plot(d_mesh)
     # plt.show()
 
-    print(f'|u[0]| = {assemble(sqrt(dot(Xl[0], Xl[0])) * dx(ids["layer1"]))}')
+    # print(f'|u[0]| = {assemble(sqrt(dot(Xl[0], Xl[0])) * dx(ids["layer1"]))}')
     # print(f'Vol(1) = {assemble(Constant(1) * dx(ids["layer1"]))}')
 
     return conv, Xl, J_layer[layers-1]
