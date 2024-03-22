@@ -152,7 +152,7 @@ def run_pygmsh(layers, bottom, right_all, top_all, left_all):
         ids[f"layer{n}"] = physical_counter
         physical_counter += 1
 
-        print(f'finished layer {n}')
+        # print(f'finished layer {n}')
 
 
     mesh = geometry.generate_mesh(dim=2)
