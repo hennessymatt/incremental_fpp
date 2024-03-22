@@ -195,6 +195,21 @@ def swelling_step(layers, J_0, mesh, subdomains, bdry, ids, params, U_eul = None
     # extract solution components
     Xl = list(X.block_split())
 
+    class InitialGuess(UserExpression):
+        def eval(self, values, x):
+            values[0] = 0
+            values[1] = J_layer[-1] * x[1]
+        def value_shape(self):
+            return (2, )
+
+    # X.block_interpolate(InitialGuess())
+    Xl[layers-1].interpolate(InitialGuess())
+
+    X.apply("from subfunctions")
+
+    # print(Xl[0](5, 0.5))
+    print(np.linalg.norm(X.block_vector()[:]))
+
     #---------------------------------------------------------------------
     # Set up code to save solid quanntities only on the solid domain and
     # fluid quantities only on the fluid domain
